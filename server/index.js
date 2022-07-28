@@ -21,7 +21,7 @@ app.get('/', function(req,res){
 
 app.use(express.static(path.join(__dirname,'../public')))
 
-// app.use(express.json())
+app.use(express.json())
 
 const cars = ['ICEEZ', 'SUNO', 'ALYZE']
 
@@ -48,7 +48,11 @@ app.post('/api/cars', (req, res) => {
        } else if (name === ''){
             rollbar.error("A car was posted without a name")
             res.status(400).send('You must enter a name.')
-       } else {
+       } else if(name === '1'){
+            rollbar.warning("A car was posted with a space only")
+            res.status(400).send('You must enter a name.')
+       }
+       else {
             rollbar.critical("A car that already exists was posted", name)
             res.status(400).send('That Car name already exists.')
        }
